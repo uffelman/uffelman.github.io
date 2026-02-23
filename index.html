@@ -1,0 +1,866 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Stephen Uffelman — iOS & macOS Developer</title>
+        <style>
+            /* ── Reset & Base ── */
+            *,
+            *::before,
+            *::after {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            :root {
+                --bg: #000000;
+                --bg-elevated: #1c1c1e;
+                --bg-card: #2c2c2e;
+                --text-primary: #f5f5f7;
+                --text-secondary: #a1a1a6;
+                --text-tertiary: #6e6e73;
+                --accent: #0a84ff;
+                --accent-hover: #409cff;
+                --border: rgba(255, 255, 255, 0.08);
+                --radius: 16px;
+                --max-width: 980px;
+            }
+
+            html {
+                scroll-behavior: smooth;
+                -webkit-text-size-adjust: 100%;
+            }
+
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                    "SF Pro Text", "Helvetica Neue", Helvetica, Arial,
+                    sans-serif;
+                background: var(--bg);
+                color: var(--text-primary);
+                line-height: 1.5;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+
+            a {
+                color: var(--accent);
+                text-decoration: none;
+                transition: color 0.2s ease;
+            }
+
+            a:hover {
+                color: var(--accent-hover);
+            }
+
+            img {
+                display: block;
+                max-width: 100%;
+            }
+
+            /* ── Navigation ── */
+            nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 100;
+                background: rgba(0, 0, 0, 0.72);
+                backdrop-filter: saturate(180%) blur(20px);
+                -webkit-backdrop-filter: saturate(180%) blur(20px);
+                border-bottom: 1px solid var(--border);
+            }
+
+            nav .nav-inner {
+                max-width: var(--max-width);
+                margin: 0 auto;
+                padding: 0 24px;
+                height: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            nav .nav-logo {
+                font-size: 15px;
+                font-weight: 600;
+                color: var(--text-primary);
+                letter-spacing: -0.01em;
+            }
+
+            nav .nav-links {
+                display: flex;
+                gap: 28px;
+                list-style: none;
+            }
+
+            nav .nav-links a {
+                font-size: 13px;
+                color: var(--text-secondary);
+                transition: color 0.2s ease;
+            }
+
+            nav .nav-links a:hover {
+                color: var(--text-primary);
+            }
+
+            .nav-toggle {
+                display: none;
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 4px;
+            }
+
+            .nav-toggle span {
+                display: block;
+                width: 18px;
+                height: 1.5px;
+                background: var(--text-secondary);
+                margin: 4px 0;
+                transition: all 0.3s ease;
+                border-radius: 1px;
+            }
+
+            /* ── Sections ── */
+            section {
+                padding: 120px 24px 80px;
+            }
+
+            .section-inner {
+                max-width: var(--max-width);
+                margin: 0 auto;
+            }
+
+            .section-label {
+                font-size: 13px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                color: var(--text-tertiary);
+                margin-bottom: 12px;
+            }
+
+            .section-title {
+                font-size: 40px;
+                font-weight: 700;
+                letter-spacing: -0.025em;
+                line-height: 1.1;
+                margin-bottom: 24px;
+            }
+
+            /* ── Hero ── */
+            .hero {
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 120px 24px;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .hero::before {
+                content: "";
+                position: absolute;
+                top: -40%;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 600px;
+                height: 600px;
+                background: radial-gradient(
+                    circle,
+                    rgba(10, 132, 255, 0.12) 0%,
+                    transparent 70%
+                );
+                pointer-events: none;
+            }
+
+            .hero h1 {
+                font-size: clamp(44px, 8vw, 80px);
+                font-weight: 700;
+                letter-spacing: -0.035em;
+                line-height: 1.05;
+                margin-bottom: 16px;
+            }
+
+            .hero .tagline {
+                font-size: clamp(18px, 3vw, 24px);
+                color: var(--text-secondary);
+                font-weight: 400;
+                letter-spacing: -0.01em;
+                max-width: 600px;
+                margin: 0 auto 40px;
+            }
+
+            .hero .cta-group {
+                display: flex;
+                gap: 16px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 12px 24px;
+                border-radius: 980px;
+                font-size: 15px;
+                font-weight: 500;
+                transition: all 0.2s ease;
+                border: none;
+                cursor: pointer;
+            }
+
+            .btn-primary {
+                background: var(--accent);
+                color: #fff;
+            }
+
+            .btn-primary:hover {
+                background: var(--accent-hover);
+                color: #fff;
+                transform: scale(1.02);
+            }
+
+            .btn-secondary {
+                background: var(--bg-card);
+                color: var(--text-primary);
+                border: 1px solid var(--border);
+            }
+
+            .btn-secondary:hover {
+                background: #3a3a3c;
+                color: var(--text-primary);
+                transform: scale(1.02);
+            }
+
+            /* ── About ── */
+            .about {
+                border-top: 1px solid var(--border);
+            }
+
+            .about-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 64px;
+                align-items: start;
+            }
+
+            .about p {
+                font-size: 17px;
+                color: var(--text-secondary);
+                line-height: 1.65;
+                margin-bottom: 16px;
+            }
+
+            .about .stats {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 24px;
+                margin-top: 16px;
+            }
+
+            .stat {
+                background: var(--bg-elevated);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                padding: 24px;
+            }
+
+            .stat-number {
+                font-size: 36px;
+                font-weight: 700;
+                letter-spacing: -0.03em;
+                color: var(--text-primary);
+            }
+
+            .stat-label {
+                font-size: 13px;
+                color: var(--text-tertiary);
+                margin-top: 4px;
+            }
+
+            /* ── Projects ── */
+            .projects {
+                border-top: 1px solid var(--border);
+            }
+
+            .projects-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+                margin-top: 48px;
+            }
+
+            .project-card {
+                background: var(--bg-elevated);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                padding: 32px;
+                transition: all 0.3s ease;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .project-card:hover {
+                border-color: rgba(255, 255, 255, 0.15);
+                transform: translateY(-2px);
+            }
+
+            .project-icon {
+                width: 48px;
+                height: 48px;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .project-card h3 {
+                font-size: 20px;
+                font-weight: 600;
+                letter-spacing: -0.015em;
+                margin-bottom: 8px;
+            }
+
+            .project-card p {
+                font-size: 15px;
+                color: var(--text-secondary);
+                line-height: 1.5;
+                margin-bottom: 20px;
+                flex: 1;
+            }
+
+            .project-tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .tag {
+                font-size: 12px;
+                font-weight: 500;
+                padding: 4px 12px;
+                border-radius: 980px;
+                background: var(--bg-card);
+                color: var(--text-tertiary);
+                border: 1px solid var(--border);
+            }
+
+            /* ── Skills ── */
+            .skills {
+                border-top: 1px solid var(--border);
+            }
+
+            .skills-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+                margin-top: 48px;
+            }
+
+            .skill-group {
+                background: var(--bg-elevated);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                padding: 32px;
+            }
+
+            .skill-group h3 {
+                font-size: 17px;
+                font-weight: 600;
+                margin-bottom: 16px;
+                letter-spacing: -0.01em;
+            }
+
+            .skill-group ul {
+                list-style: none;
+            }
+
+            .skill-group li {
+                font-size: 15px;
+                color: var(--text-secondary);
+                padding: 6px 0;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .skill-group li:last-child {
+                border-bottom: none;
+            }
+
+            /* ── Contact ── */
+            .contact {
+                border-top: 1px solid var(--border);
+                text-align: center;
+            }
+
+            .contact .section-title {
+                max-width: 500px;
+                margin: 0 auto 16px;
+            }
+
+            .contact p {
+                font-size: 17px;
+                color: var(--text-secondary);
+                max-width: 500px;
+                margin: 0 auto 40px;
+            }
+
+            .contact-links {
+                display: flex;
+                justify-content: center;
+                gap: 16px;
+                flex-wrap: wrap;
+            }
+
+            .contact-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                padding: 14px 28px;
+                background: var(--bg-elevated);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                color: var(--text-primary);
+                font-size: 15px;
+                font-weight: 500;
+                transition: all 0.2s ease;
+            }
+
+            .contact-link:hover {
+                border-color: rgba(255, 255, 255, 0.15);
+                color: var(--text-primary);
+                transform: translateY(-2px);
+            }
+
+            .contact-link svg {
+                width: 20px;
+                height: 20px;
+                flex-shrink: 0;
+            }
+
+            /* ── Footer ── */
+            footer {
+                border-top: 1px solid var(--border);
+                padding: 24px;
+                text-align: center;
+            }
+
+            footer p {
+                font-size: 13px;
+                color: var(--text-tertiary);
+            }
+
+            /* ── Responsive ── */
+            @media (max-width: 768px) {
+                section {
+                    padding: 80px 20px 60px;
+                }
+
+                .section-title {
+                    font-size: 32px;
+                }
+
+                .nav-links {
+                    display: none;
+                    position: absolute;
+                    top: 48px;
+                    left: 0;
+                    right: 0;
+                    background: rgba(0, 0, 0, 0.95);
+                    backdrop-filter: saturate(180%) blur(20px);
+                    -webkit-backdrop-filter: saturate(180%) blur(20px);
+                    flex-direction: column;
+                    padding: 16px 24px;
+                    gap: 0;
+                    border-bottom: 1px solid var(--border);
+                }
+
+                .nav-links.open {
+                    display: flex;
+                }
+
+                .nav-links li a {
+                    display: block;
+                    padding: 12px 0;
+                    font-size: 15px;
+                    border-bottom: 1px solid var(--border);
+                }
+
+                .nav-links li:last-child a {
+                    border-bottom: none;
+                }
+
+                .nav-toggle {
+                    display: block;
+                }
+
+                .about-grid {
+                    grid-template-columns: 1fr;
+                    gap: 40px;
+                }
+
+                .projects-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .skills-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .hero {
+                    min-height: 85vh;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .about .stats {
+                    grid-template-columns: 1fr;
+                }
+
+                .contact-links {
+                    flex-direction: column;
+                    align-items: center;
+                }
+            }
+
+            /* ── Animations ── */
+            .fade-in {
+                opacity: 0;
+                transform: translateY(20px);
+                transition:
+                    opacity 0.6s ease,
+                    transform 0.6s ease;
+            }
+
+            .fade-in.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Navigation -->
+        <nav>
+            <div class="nav-inner">
+                <span class="nav-logo">S.U.</span>
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Hero -->
+        <section class="hero">
+            <div class="section-inner">
+                <h1 class="fade-in">Stephen Uffelman</h1>
+                <p class="tagline fade-in">
+                    iOS &amp; macOS developer crafting thoughtful, native
+                    experiences for Apple platforms.
+                </p>
+                <div class="cta-group fade-in">
+                    <a href="#projects" class="btn btn-primary"
+                        >View Projects</a
+                    >
+                    <a href="#contact" class="btn btn-secondary"
+                        >Get in Touch</a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- About -->
+        <section class="about" id="about">
+            <div class="section-inner">
+                <div class="about-grid">
+                    <div class="fade-in">
+                        <p class="section-label">About</p>
+                        <h2 class="section-title">
+                            Building for Apple platforms since the early days of
+                            the App Store.
+                        </h2>
+                        <p>
+                            With over a decade of experience developing for iOS
+                            and macOS, I focus on creating polished, performant
+                            apps that feel right at home on Apple hardware. I
+                            believe great software is invisible — it gets out of
+                            your way and lets you focus on what matters.
+                        </p>
+                        <p>
+                            From architecting complex SwiftUI interfaces to
+                            fine-tuning Core Animation details, I care deeply
+                            about the craft. I've shipped apps used by hundreds
+                            of thousands of people and contributed to
+                            open-source projects across the Apple ecosystem.
+                        </p>
+                    </div>
+                    <div class="fade-in">
+                        <div class="stats">
+                            <div class="stat">
+                                <div class="stat-number">10+</div>
+                                <div class="stat-label">
+                                    Years of Experience
+                                </div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">20+</div>
+                                <div class="stat-label">Apps Shipped</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">4,000,000+</div>
+                                <div class="stat-label">Users Reached</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">5&#9733;</div>
+                                <div class="stat-label">Average Rating</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects -->
+        <section class="projects" id="projects">
+            <div class="section-inner">
+                <p class="section-label fade-in">Projects</p>
+                <h2 class="section-title fade-in">Selected Work</h2>
+                <div class="projects-grid">
+                    <div class="project-card fade-in">
+                        <div
+                            class="project-icon"
+                            style="background: rgba(10, 132, 255, 0.15)"
+                        >
+                            &#x1F4F1;
+                        </div>
+                        <h3>TaskFlow</h3>
+                        <p>
+                            A native task management app for iOS and macOS with
+                            seamless iCloud sync, widgets, and deep system
+                            integration. Built entirely in SwiftUI.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">SwiftUI</span>
+                            <span class="tag">CloudKit</span>
+                            <span class="tag">WidgetKit</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card fade-in">
+                        <div
+                            class="project-icon"
+                            style="background: rgba(48, 209, 88, 0.15)"
+                        >
+                            &#x1F3A8;
+                        </div>
+                        <h3>Paletteer</h3>
+                        <p>
+                            A macOS color palette tool for designers and
+                            developers. Features a native interface, color space
+                            conversion, and export to code.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">AppKit</span>
+                            <span class="tag">Core Graphics</span>
+                            <span class="tag">macOS</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card fade-in">
+                        <div
+                            class="project-icon"
+                            style="background: rgba(255, 159, 10, 0.15)"
+                        >
+                            &#x26A1;
+                        </div>
+                        <h3>Runlog</h3>
+                        <p>
+                            A fitness tracking companion for runners that
+                            integrates with HealthKit and delivers personalized
+                            insights through on-device processing.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">HealthKit</span>
+                            <span class="tag">Core ML</span>
+                            <span class="tag">Charts</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card fade-in">
+                        <div
+                            class="project-icon"
+                            style="background: rgba(191, 90, 242, 0.15)"
+                        >
+                            &#x1F527;
+                        </div>
+                        <h3>NetProbe</h3>
+                        <p>
+                            A developer utility for macOS that monitors network
+                            traffic, inspects API responses, and provides
+                            real-time debugging tools.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">Network.framework</span>
+                            <span class="tag">Swift Concurrency</span>
+                            <span class="tag">macOS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills -->
+        <section class="skills" id="skills">
+            <div class="section-inner">
+                <p class="section-label fade-in">Skills</p>
+                <h2 class="section-title fade-in">Tools &amp; Technologies</h2>
+                <div class="skills-grid">
+                    <div class="skill-group fade-in">
+                        <h3>Languages</h3>
+                        <ul>
+                            <li>Swift</li>
+                            <li>Objective-C</li>
+                            <li>Python</li>
+                            <li>JavaScript</li>
+                            <li>C / C++</li>
+                        </ul>
+                    </div>
+
+                    <div class="skill-group fade-in">
+                        <h3>Frameworks</h3>
+                        <ul>
+                            <li>SwiftUI</li>
+                            <li>UIKit / AppKit</li>
+                            <li>Combine / Async-Await</li>
+                            <li>Core Data / SwiftData</li>
+                            <li>Core Animation</li>
+                        </ul>
+                    </div>
+
+                    <div class="skill-group fade-in">
+                        <h3>Platform</h3>
+                        <ul>
+                            <li>Xcode &amp; Instruments</li>
+                            <li>CloudKit / iCloud</li>
+                            <li>TestFlight / App Store Connect</li>
+                            <li>CI/CD (Fastlane, Xcode Cloud)</li>
+                            <li>Git</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section class="contact" id="contact">
+            <div class="section-inner">
+                <p class="section-label fade-in">Contact</p>
+                <h2 class="section-title fade-in">
+                    Let's build something great together.
+                </h2>
+                <p class="fade-in">
+                    I'm always open to interesting projects and collaborations.
+                    Reach out and let's talk.
+                </p>
+                <div class="contact-links fade-in">
+                    <a
+                        href="mailto:uffelman.work@gmail.com"
+                        class="contact-link"
+                    >
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <rect x="2" y="4" width="20" height="16" rx="2" />
+                            <path d="M22 4l-10 8L2 4" />
+                        </svg>
+                        Email
+                    </a>
+                    <a
+                        href="https://github.com/uffelman"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="contact-link"
+                    >
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"
+                            />
+                        </svg>
+                        GitHub
+                    </a>
+                    <a
+                        href="https://www.linkedin.com/in/uffel/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="contact-link"
+                    >
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                            />
+                        </svg>
+                        LinkedIn
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2026 Stephen Uffelman. All rights reserved.</p>
+        </footer>
+
+        <script>
+            // Mobile nav toggle
+            const toggle = document.querySelector(".nav-toggle");
+            const navLinks = document.querySelector(".nav-links");
+
+            toggle.addEventListener("click", () => {
+                navLinks.classList.toggle("open");
+            });
+
+            // Close mobile nav on link click
+            navLinks.querySelectorAll("a").forEach((link) => {
+                link.addEventListener("click", () => {
+                    navLinks.classList.remove("open");
+                });
+            });
+
+            // Scroll fade-in
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("visible");
+                        }
+                    });
+                },
+                { threshold: 0.1 },
+            );
+
+            document
+                .querySelectorAll(".fade-in")
+                .forEach((el) => observer.observe(el));
+        </script>
+    </body>
+</html>
